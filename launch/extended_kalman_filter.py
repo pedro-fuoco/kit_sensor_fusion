@@ -13,8 +13,11 @@ def generate_launch_description():
         executable='ekf_node',
         name='ekf_filter_node',
         output='screen',
-        namespace='kit',
         parameters=[config_file_path],
+        remappings=[
+            ('/odometry/filtered', '/kit/odometry/filtered'),
+            ('/set_pose', '/kit/set_pose')
+        ],
     )
 
     return LaunchDescription([ekf_node])
