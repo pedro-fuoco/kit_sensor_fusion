@@ -1,0 +1,46 @@
+ekf_filter_node:
+  ros__parameters:
+    frequency: 30.0  # Frequencia do EKF
+    sensor_timeout: 0.1 # Periodo para considerar que um sensor perdeu dados
+    two_d_mode: true  # Assume que o robô se desloca apenas em duas dimensões
+    publish_tf: true  # Esse node será responsável por publicar as transformações entre eixos
+    publish_acceleration: false # Temos apenas uma fonte de aceleração no Kit, a IMU
+    # map_frame: "map"
+    odom_frame: "odom"
+    base_link_frame: "base_link"
+    world_frame: "odom" # EKF fará fusão com a intenção de estimar a posição LOCAL do sensor. Ao invés de global (caso fosse "map")
+  
+    # Odometria dos encoders
+    odom0: "/wheel/odom" 
+    odom0_config: [true, true, true,
+                   false, false, false,
+                   true,  true,  true,
+                   false, false, true,
+                   false, false, false]
+        #        [x_pos   , y_pos    , z_pos,
+        #         roll    , pitch    , yaw,
+        #         x_vel   , y_vel    , z_vel,
+        #         roll_vel, pitch_vel, yaw_vel,
+        #         x_accel , y_accel  , z_accel]
+  
+    # Odometria da IMU
+    imu0: "/imu/data"
+    imu0_config: [false, false, false,
+                  true,  true,  true,
+                  false, false, false,
+                  true,  true,  true,
+                  true,  true,  true]
+        #        [x_pos   , y_pos    , z_pos,
+        #         roll    , pitch    , yaw,
+        #         x_vel   , y_vel    , z_vel,
+        #         roll_vel, pitch_vel, yaw_vel,
+        #         x_accel , y_accel  , z_accel]
+    imu0_remove_gravitational_acceleration: true
+
+    # DEBUG REMOVE LATER
+    print_diagnostics: true
+    debug: false
+    debug_out_file: ~/ekf-debug.txt
+
+    # Add intial state ?
+    # Does debug work ? Can't find the file, it might be the path
